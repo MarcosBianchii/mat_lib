@@ -54,11 +54,10 @@ pub fn mat_from_str<T: FromStr>(
     let mut cols = 0;
 
     for row in s.split(sep) {
-        let mut nums = row.split_whitespace();
         let mut read = 0;
         rows += 1;
 
-        while let Some(num) = nums.next() {
+        for num in row.split_whitespace() {
             match num.parse::<T>() {
                 Ok(num) => {
                     data.push(num);

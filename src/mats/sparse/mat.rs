@@ -34,11 +34,7 @@ impl Sparse {
             return None;
         }
 
-        if !self.data.contains_key(&idx) {
-            self.data.insert(idx, 0.0);
-        }
-
-        self.data.get_mut(&idx)
+        Some(self.data.entry(idx).or_insert(0.0))
     }
 
     pub fn set(&mut self, idx: (usize, usize), val: Entry) -> Option<Entry> {
