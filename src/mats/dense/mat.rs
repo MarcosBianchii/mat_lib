@@ -125,15 +125,6 @@ impl Dense {
         n == m
     }
 
-    /// Resizes the matrix with a new shape. Fills every new entry with the value `0`.
-    #[allow(unused_variables)]
-    pub fn reshape(&mut self, shape @ (n, m): (usize, usize)) -> &mut Self {
-        self.data.resize(n * m, 0.0);
-        self.n = n;
-        self.m = m;
-        self
-    }
-
     /// Computes the multiplication of the given matrix and `rhs` in-place.
     ///
     /// # Usage

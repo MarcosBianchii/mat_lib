@@ -1,8 +1,5 @@
-pub use std::str::FromStr;
-use std::{
-    fmt::{self, Display},
-    ops::{Index, IndexMut},
-};
+use std::fmt::{self, Display};
+use std::ops::{Index, IndexMut};
 
 use super::mat::Dense;
 use crate::Entry;
@@ -66,10 +63,11 @@ impl Display for Dense {
         for i in 0..n {
             let mut row = String::with_capacity(len * m + 3);
             row.push('[');
+
             for j in 0..m {
                 let num = self[(i, j)];
                 let fmt = format!(" {num:.4}");
-                row.push_str(&fmt[..7]);
+                row.push_str(&fmt[..len.min(fmt.len())]);
             }
 
             row.push_str(" ]");
