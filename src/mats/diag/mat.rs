@@ -34,7 +34,7 @@ impl<T: DiagImplTraits, const N: usize, const M: usize> Diag<T, N, M> {
         Self::with_value(T::from(0))
     }
 
-    /// Initializes a new `N x M` matrix filled with random values.
+    /// Initializes a new `N x M` where the diagonal is filled with random values.
     pub fn rand() -> Self
     where
         Standard: Distribution<T>,
