@@ -2,10 +2,8 @@
 //! It is often used when every entry in the matrix is 0 except for the diagonal.
 //! This implementation is more efficient than the dense matrix implementation for this use case.
 use super::DiagImplTraits;
-use rand::{
-    distributions::{Distribution, Standard},
-    Rng,
-};
+use rand::distributions::{Distribution, Standard};
+use rand::Rng;
 use std::mem;
 
 #[derive(Debug, PartialEq)]
@@ -86,7 +84,7 @@ impl<T: DiagImplTraits, const N: usize, const M: usize> Diag<T, N, M> {
         Ok(Self { data, zero })
     }
 
-    /// Returns a reference to the `Entry` at the given `idx: (i, j)`.
+    /// Returns a reference to the entry at the given `idx: (i, j)`.
     /// If the given index is out of bounds returns the `None` variant.
     ///
     /// # Usage
@@ -104,7 +102,7 @@ impl<T: DiagImplTraits, const N: usize, const M: usize> Diag<T, N, M> {
             .map(|num| if i == j { num } else { &self.zero })
     }
 
-    /// Returns a mutable reference to the `Entry` at the given `idx: :(i, j)`.
+    /// Returns a mutable reference to the entry at the given `idx: (i, j)`.
     /// If the given index is out of bounds returns the `None` variant.
     ///
     /// # Usage
@@ -116,18 +114,15 @@ impl<T: DiagImplTraits, const N: usize, const M: usize> Diag<T, N, M> {
     ///     *num = 1.0;
     /// }
     ///
-    /// if mat.get_mut((3, 2)).is_some() {
-    ///     panic!("Out of bounds");
-    /// }
-    ///
     /// assert_eq!(1.0, mat[(0, 0)]);
+    /// assert_eq!(None, mat.get_mut((3, 2)));
     /// ```
     #[allow(unused_variables)]
     pub fn get_mut(&mut self, idx @ (i, j): (usize, usize)) -> Option<&mut T> {
         (i == j).then(|| self.data.get_mut(i)).flatten()
     }
 
-    /// Sets `val` to the given `idx: (i, j)`in the matrix
+    /// Sets `val` to the given `idx: (i, j)` in the matrix
     /// and returns the previous value.
     ///
     /// # Usage
@@ -154,7 +149,7 @@ impl<T: DiagImplTraits, const N: usize, const M: usize> Diag<T, N, M> {
         N == M
     }
 
-    /// Computes the multiplication of the given matrix and `rhs` in-place.
+    /// Computes the multiplication of the given matrix and a scalar `rhs` in-place.
     ///
     /// # Usage
     /// ```
@@ -186,6 +181,13 @@ impl<T: DiagImplTraits, const N: usize, const M: usize> Diag<T, N, M> {
     }
 
     /// Computes the determinant of the given matrix.
+    ///
+    /// # Example
+    /// ```
+    /// use mat_lib::diag::Diag;
+    /// let mat = Diag::<i32, 3, 3>::from([1, 2, 3]).unwrap();
+    /// assert_eq!(Some(6), mat.det());
+    /// ```
     pub fn det(&self) -> Option<T> {
         if !self.is_square() {
             return None;
